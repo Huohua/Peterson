@@ -1,4 +1,4 @@
-package tv.huohua.peterson.app;
+package tv.huohua.peterson.misc;
 
 import java.util.UUID;
 
