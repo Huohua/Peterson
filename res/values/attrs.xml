@@ -6,10 +6,4 @@
         <attr name="verticalAppending" format="boolean" />
     </declare-styleable>
 
-    <attr name="BtnBackBackground" format="reference" />
-    <attr name="BtnSettingsBackground" format="reference" />
-    <attr name="HeaderBackground" format="reference" />
-    <attr name="HeaderDivider" format="reference" />
-    <attr name="HomeTabSelectionBackground" format="reference" />
-
 </resources>
