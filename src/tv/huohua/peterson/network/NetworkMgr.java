@@ -6,6 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import tv.huohua.peterson.api.ApiCallResponse;
 import tv.huohua.peterson.api.IHHApi;
 import android.content.Context;
 import android.os.Handler;
@@ -41,15 +42,17 @@ final public class NetworkMgr {
     static final private int MSG_SYNC_FINISHED = 0;
     static final private String TAG = NetworkMgr.class.getName();
 
-    public static boolean doApiCall(final Context context, final IHHApi<?> api) {
-        boolean succeeded;
+    public static ApiCallResponse doApiCall(final Context context, final IHHApi api) {
+        ApiCallResponse response;
         try {
-            succeeded = api.call(context);
+            response = api.call(context);
         } catch (final Exception exception) {
             exception.printStackTrace();
-            succeeded = false;
+
+            response = new ApiCallResponse(api);
+            response.setSucceeded(false);
         }
-        return succeeded;
+        return response;
     }
 
     public static NetworkMgr getInstance() {
@@ -93,15 +96,12 @@ final public class NetworkMgr {
         Log.i(TAG, "removeListener (Length=" + listeners.size() + ")");
     }
 
-    public void startSync(final IHHApi<?> api) {
+    public void startSync(final IHHApi api) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 final long timeBeforeApiCall = System.currentTimeMillis();
-                final boolean succeeded = doApiCall(context, api);
-                final ApiCallResponse response = new ApiCallResponse();
-                response.setApi(api);
-                response.setSucceeded(succeeded);
+                final ApiCallResponse response = doApiCall(context, api);
                 response.setAccessTime(System.currentTimeMillis() - timeBeforeApiCall);
                 notifyApiCallFinished(response);
             }

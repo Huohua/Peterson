@@ -1,18 +1,26 @@
-package tv.huohua.peterson.network;
-
-import tv.huohua.peterson.api.IHHApi;
+package tv.huohua.peterson.api;
 
 public class ApiCallResponse {
     private long accessTime;
-    private IHHApi<?> api;
+    final private IHHApi api;
+    private Object data;
     private boolean isSucceeded;
+
+    public ApiCallResponse(final IHHApi api) {
+        this.api = api;
+        this.isSucceeded = true;
+    }
 
     public long getAccessTime() {
         return accessTime;
     }
 
-    public IHHApi<?> getApi() {
+    public IHHApi getApi() {
         return api;
+    }
+
+    public Object getData() {
+        return data;
     }
 
     public boolean isSucceeded() {
@@ -23,8 +31,8 @@ public class ApiCallResponse {
         this.accessTime = accessTime;
     }
 
-    public void setApi(final IHHApi<?> api) {
-        this.api = api;
+    public void setData(final Object data) {
+        this.data = data;
     }
 
     public void setSucceeded(final boolean isSucceeded) {

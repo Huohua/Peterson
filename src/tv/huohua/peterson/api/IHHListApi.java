@@ -1,8 +1,6 @@
 package tv.huohua.peterson.api;
 
-import java.util.List;
-
-public interface IHHListApi<Data> extends IHHApi<List<Data>> {
+public interface IHHListApi extends IHHApi {
     public int getOffset();
 
     public int getLimit();
