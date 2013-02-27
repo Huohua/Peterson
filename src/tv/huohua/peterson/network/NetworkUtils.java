@@ -20,24 +20,6 @@ final public class NetworkUtils {
         HttpURLConnection.setFollowRedirects(true);
     }
 
-    public static HttpURLConnection getHttpConnection(final HttpRequest request) throws MalformedURLException,
-            IOException {
-        final HttpURLConnection conn = (HttpURLConnection) new URL(request.getUrl()).openConnection();
-        conn.setConnectTimeout(40 * 1000);
-        conn.setReadTimeout(30 * 1000);
-        conn.setDoInput(true);
-        if (!conn.getRequestMethod().equals(HttpRequest.HTTP_METHOD_GET)) {
-            conn.setRequestMethod(request.getHttpMethod());
-            if (request.getParams().size() > 0) {
-                conn.setDoOutput(true);
-                conn.getOutputStream().write(request.getParamsAsByteArray());
-                conn.getOutputStream().flush();
-                conn.getOutputStream().close();
-            }
-        }
-        return conn;
-    }
-
     public static Map<String, List<String>> getQueryParams(final String url) {
         try {
             final Map<String, List<String>> params = new HashMap<String, List<String>>();
@@ -64,6 +46,24 @@ final public class NetworkUtils {
         } catch (final UnsupportedEncodingException exception) {
             return new HashMap<String, List<String>>();
         }
+    }
+
+    public static HttpURLConnection getUrlConnection(final HttpRequest request) throws MalformedURLException,
+            IOException {
+        final HttpURLConnection conn = (HttpURLConnection) new URL(request.getUrl()).openConnection();
+        conn.setConnectTimeout(40 * 1000);
+        conn.setReadTimeout(30 * 1000);
+        conn.setDoInput(true);
+        if (!conn.getRequestMethod().equals(HttpRequest.HTTP_METHOD_GET)) {
+            conn.setRequestMethod(request.getHttpMethod());
+            if (request.getParams().size() > 0) {
+                conn.setDoOutput(true);
+                conn.getOutputStream().write(request.getParamsAsByteArray());
+                conn.getOutputStream().flush();
+                conn.getOutputStream().close();
+            }
+        }
+        return conn;
     }
 
     public static boolean isNetworkAvailable(Context context) {
