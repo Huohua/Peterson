@@ -12,10 +12,15 @@
 package tv.huohua.peterson.network;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 public class HttpRequest {
     final public static String HTTP_METHOD_DELETE = "DELETE";
@@ -61,6 +66,16 @@ public class HttpRequest {
             builder.append("&");
         }
         return builder.toString().getBytes();
+    }
+    
+    public List<NameValuePair> getParamsAsList() {
+        final List<NameValuePair> result = new ArrayList<NameValuePair>();
+        final Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
+        while (iterator.hasNext()) {
+            final Map.Entry<String, String> kv = iterator.next();
+            result.add(new BasicNameValuePair(kv.getKey(), kv.getValue()));
+        }
+        return result;
     }
 
     public String getUrl() {

@@ -14,13 +14,23 @@ package tv.huohua.peterson.network;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -59,22 +69,31 @@ final public class NetworkUtils {
         }
     }
 
-    public static HttpURLConnection getUrlConnection(final HttpRequest request) throws MalformedURLException,
-            IOException {
-        final HttpURLConnection conn = (HttpURLConnection) new URL(request.getUrl()).openConnection();
-        conn.setConnectTimeout(40 * 1000);
-        conn.setReadTimeout(30 * 1000);
-        conn.setDoInput(true);
-        if (!conn.getRequestMethod().equals(HttpRequest.HTTP_METHOD_GET)) {
-            conn.setRequestMethod(request.getHttpMethod());
-            if (request.getParams().size() > 0) {
-                conn.setDoOutput(true);
-                conn.getOutputStream().write(request.getParamsAsByteArray());
-                conn.getOutputStream().flush();
-                conn.getOutputStream().close();
-            }
+    public static HttpResponse httpQuery(final HttpRequest request) throws ClientProtocolException, IOException {
+        final DefaultHttpClient client = new DefaultHttpClient();
+        final HttpParams params = client.getParams();
+        HttpConnectionParams.setConnectionTimeout(params, 40 * 1000);
+        HttpConnectionParams.setSoTimeout(params, 30 * 1000);
+
+        final HttpRequestBase requestBase;
+        if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_GET)) {
+            requestBase = new HttpGet(request.getUrl());
+        } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_POST)) {
+            final HttpPost post = new HttpPost(request.getUrl());
+            post.setEntity(new UrlEncodedFormEntity(request.getParamsAsList()));
+            requestBase = post;
+        } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_PUT)) {
+            final HttpPut put = new HttpPut(request.getUrl());
+            put.setEntity(new UrlEncodedFormEntity(request.getParamsAsList()));
+            requestBase = put;
+        } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_DELETE)) {
+            final HttpDelete delete = new HttpDelete(request.getUrl());
+            requestBase = delete;
+        } else {
+            return null;
         }
-        return conn;
+
+        return client.execute(requestBase);
     }
 
     public static boolean isNetworkAvailable(Context context) {
