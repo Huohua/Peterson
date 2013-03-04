@@ -11,12 +11,16 @@
 
 package tv.huohua.peterson.api;
 
-public interface IHHListApi extends IHHApi {
-    public int getOffset();
+import java.io.Serializable;
 
-    public int getLimit();
+import android.content.Context;
 
-    public void setLimit(int limit);
+abstract public class AbsApi<T> implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-    public void setOffset(int offset);
+    public abstract ApiCallResponse<T> call(Context context);
+
+    public ApiCallResponse<T> getEmptyApiCallResponse() {
+        return new ApiCallResponse<T>(this);
+    }
 }

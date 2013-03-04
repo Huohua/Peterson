@@ -11,13 +11,18 @@
 
 package tv.huohua.peterson.api;
 
-public class ApiCallResponse {
+import java.io.Serializable;
+
+public class ApiCallResponse<T> implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private long accessTime;
-    final private IHHApi api;
-    private Object data;
+    final private AbsApi<T> api;
+    private T data;
+    private Object errorMessage;
     private boolean isSucceeded;
 
-    public ApiCallResponse(final IHHApi api) {
+    public ApiCallResponse(final AbsApi<T> api) {
         this.api = api;
         this.isSucceeded = true;
     }
@@ -26,12 +31,16 @@ public class ApiCallResponse {
         return accessTime;
     }
 
-    public IHHApi getApi() {
+    public AbsApi<T> getApi() {
         return api;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
+    }
+
+    public Object getErrorMessage() {
+        return errorMessage;
     }
 
     public boolean isSucceeded() {
@@ -42,8 +51,12 @@ public class ApiCallResponse {
         this.accessTime = accessTime;
     }
 
-    public void setData(final Object data) {
+    public void setData(final T data) {
         this.data = data;
+    }
+
+    public void setErrorMessage(final Object errorMessage) {
+        this.errorMessage = errorMessage;
     }
 
     public void setSucceeded(final boolean isSucceeded) {

@@ -11,10 +11,25 @@
 
 package tv.huohua.peterson.api;
 
-import java.io.Serializable;
+abstract public class AbsListApi<T> extends AbsApi<T[]> {
+    private static final long serialVersionUID = 1L;
 
-import android.content.Context;
+    protected int offset;
+    protected int limit;
 
-public interface IHHApi extends Serializable {
-    ApiCallResponse call(Context context);
+    public int getOffset() {
+        return offset;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(final int limit) {
+        this.limit = limit;
+    }
+
+    public void setOffset(final int offset) {
+        this.offset = offset;
+    }
 }

@@ -18,7 +18,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import tv.huohua.peterson.api.ApiCallResponse;
-import tv.huohua.peterson.api.IHHApi;
+import tv.huohua.peterson.api.AbsApi;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
@@ -26,7 +26,7 @@ import android.util.Log;
 
 final public class NetworkMgr {
     public interface OnApiCallFinishedListener {
-        void onAPICallFinished(ApiCallResponse response);
+        void onAPICallFinished(ApiCallResponse<?> response);
     }
 
     private static Handler handler = new Handler() {
@@ -36,7 +36,7 @@ final public class NetworkMgr {
                 switch (msg.what) {
                 case MSG_SYNC_FINISHED:
                     if (msg.obj instanceof ApiCallResponse) {
-                        final ApiCallResponse response = (ApiCallResponse) msg.obj;
+                        final ApiCallResponse<?> response = (ApiCallResponse<?>) msg.obj;
                         for (final OnApiCallFinishedListener listener : instance.listeners) {
                             listener.onAPICallFinished(response);
                         }
@@ -53,14 +53,14 @@ final public class NetworkMgr {
     static final private int MSG_SYNC_FINISHED = 0;
     static final private String TAG = NetworkMgr.class.getName();
 
-    public static ApiCallResponse doApiCall(final Context context, final IHHApi api) {
-        ApiCallResponse response;
+    public static ApiCallResponse<?> doApiCall(final Context context, final AbsApi<?> api) {
+        ApiCallResponse<?> response;
         try {
             response = api.call(context);
         } catch (final Exception exception) {
             exception.printStackTrace();
 
-            response = new ApiCallResponse(api);
+            response = api.getEmptyApiCallResponse();
             response.setSucceeded(false);
         }
         return response;
@@ -94,7 +94,7 @@ final public class NetworkMgr {
         Log.i(TAG, "addListener");
     }
 
-    private void notifyApiCallFinished(final ApiCallResponse response) {
+    private void notifyApiCallFinished(final ApiCallResponse<?> response) {
         final Message msg = handler.obtainMessage(MSG_SYNC_FINISHED, response);
         handler.sendMessage(msg);
     }
@@ -107,12 +107,12 @@ final public class NetworkMgr {
         Log.i(TAG, "removeListener (Length=" + listeners.size() + ")");
     }
 
-    public void startSync(final IHHApi api) {
+    public void startSync(final AbsApi<?> api) {
         executor.execute(new Runnable() {
             @Override
             public void run() {
                 final long timeBeforeApiCall = System.currentTimeMillis();
-                final ApiCallResponse response = doApiCall(context, api);
+                final ApiCallResponse<?> response = doApiCall(context, api);
                 response.setAccessTime(System.currentTimeMillis() - timeBeforeApiCall);
                 notifyApiCallFinished(response);
             }
