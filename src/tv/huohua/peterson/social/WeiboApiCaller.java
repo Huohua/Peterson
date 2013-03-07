@@ -104,9 +104,9 @@ public class WeiboApiCaller {
     static private final String INTENT_KEY_EXCEPTION = "exception";
     static private final String INTENT_KEY_RESULT = "result";
 
-    static private final int MSG_API_CALL_FAILED = 2;
-    static private final int MSG_API_CALL_SUCCEEDED = 0;
-    static private final int MSG_AUTORIZATION_FAILED = 1;
+    static private final int MSG_API_CALL_FAILED = 0;
+    static private final int MSG_API_CALL_SUCCEEDED = 1;
+    static private final int MSG_AUTORIZATION_FAILED = 2;
 
     private final WeiboAuthorizer authorizer;
 
@@ -133,7 +133,7 @@ public class WeiboApiCaller {
                 }
 
                 @Override
-                public void onAuthorizationSucceeded(WeiboAuthorizer authorizer) {
+                public void onAuthorizationSucceeded(final WeiboAuthorizer authorizer) {
                     params.add("access_token", authorizer.getAccessToken().getToken());
                     AsyncWeiboRunner.request(url, params, httpMethod, new WeiboRequestListener(onApiCalledListener));
                 }
