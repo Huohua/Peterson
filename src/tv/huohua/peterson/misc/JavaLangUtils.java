@@ -13,6 +13,9 @@ package tv.huohua.peterson.misc;
 
 final public class JavaLangUtils {
     public static String implode(final int[] input, final String seperator) {
+        if (input == null) {
+            return null;
+        }
         final StringBuilder builder = new StringBuilder();
         if (input.length > 0) {
             builder.append(input[0]);
@@ -23,8 +26,11 @@ final public class JavaLangUtils {
         }
         return builder.toString();
     }
-    
+
     public static String implode(final Object[] input, final String seperator) {
+        if (input == null) {
+            return null;
+        }
         final StringBuilder builder = new StringBuilder();
         if (input.length > 0) {
             builder.append(input[0]);
