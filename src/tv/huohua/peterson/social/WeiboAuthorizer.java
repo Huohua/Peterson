@@ -100,10 +100,6 @@ public class WeiboAuthorizer {
     static private final int MSG_AUTH_FINISHED = 2;
     public static final String TAG = WeiboAuthorizer.class.getName();
 
-    public static void unauth(final Context context) {
-        WeiboAccessTokenKeeper.clear(context);
-    }
-
     public static Oauth2AccessToken getAccessToken(final Context context) {
         return WeiboAccessTokenKeeper.readAccessToken(context);
     }
@@ -111,6 +107,10 @@ public class WeiboAuthorizer {
     public static boolean isAuthed(final Activity activity) {
         final Oauth2AccessToken accessToken = WeiboAccessTokenKeeper.readAccessToken(activity);
         return (accessToken != null && accessToken.isSessionValid());
+    }
+
+    public static void unauth(final Context context) {
+        WeiboAccessTokenKeeper.clear(context);
     }
 
     private final Activity activity;
@@ -121,10 +121,6 @@ public class WeiboAuthorizer {
     public WeiboAuthorizer(final Activity activity, final String consumerKey, final String redirectUrl) {
         this.activity = activity;
         this.weibo = Weibo.getInstance(consumerKey, redirectUrl);
-    }
-
-    public void unauth() {
-        unauth(activity);
     }
 
     public Oauth2AccessToken getAccessToken() {
@@ -154,5 +150,9 @@ public class WeiboAuthorizer {
         }
         weibo.authorize(activity, new AuthDialogListener());
         return null;
+    }
+
+    public void unauth() {
+        unauth(activity);
     }
 }
