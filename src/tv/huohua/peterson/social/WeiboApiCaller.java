@@ -42,6 +42,10 @@ public class WeiboApiCaller {
             this.onApiCalledListener = onApiCalledListener;
         }
 
+        public OnApiCalledListener getOnApiCalledListener() {
+            return onApiCalledListener;
+        }
+
         @Override
         public void onComplete(final String result) {
             if (onApiCalledListener != null) {
@@ -140,5 +144,9 @@ public class WeiboApiCaller {
             });
             return authorizer.startAuth();
         }
+    }
+
+    public WeiboAuthorizer getAuthorizer() {
+        return authorizer;
     }
 }

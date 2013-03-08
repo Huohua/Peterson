@@ -127,8 +127,16 @@ public class WeiboAuthorizer {
         return getAccessToken(activity);
     }
 
+    public Activity getActivity() {
+        return activity;
+    }
+
     public WeiboAuthorizationListener getOnWeiboAuthorizedListener() {
         return onWeiboAuthorizedListener;
+    }
+
+    public Weibo getWeibo() {
+        return weibo;
     }
 
     public boolean isAuthed() {
