@@ -74,18 +74,18 @@ public class WeiboAuthorizer {
                 final WeiboAuthorizer authorizer = (WeiboAuthorizer) message.obj;
                 switch (message.what) {
                 case MSG_AUTH_CANCELED:
-                    if (authorizer.onWeiboAuthorizedListener != null) {
-                        authorizer.onWeiboAuthorizedListener.onAuthorizationCanceled(authorizer);
+                    if (authorizer.weiboAuthorizationListener != null) {
+                        authorizer.weiboAuthorizationListener.onAuthorizationCanceled(authorizer);
                     }
                     break;
                 case MSG_AUTH_ERROR:
-                    if (authorizer.onWeiboAuthorizedListener != null) {
-                        authorizer.onWeiboAuthorizedListener.onAuthorizationError(authorizer);
+                    if (authorizer.weiboAuthorizationListener != null) {
+                        authorizer.weiboAuthorizationListener.onAuthorizationError(authorizer);
                     }
                     break;
                 case MSG_AUTH_FINISHED:
-                    if (authorizer.onWeiboAuthorizedListener != null) {
-                        authorizer.onWeiboAuthorizedListener.onAuthorizationSucceeded(authorizer);
+                    if (authorizer.weiboAuthorizationListener != null) {
+                        authorizer.weiboAuthorizationListener.onAuthorizationSucceeded(authorizer);
                     }
                     break;
                 default:
@@ -114,9 +114,9 @@ public class WeiboAuthorizer {
     }
 
     private final Activity activity;
-    private WeiboAuthorizationListener onWeiboAuthorizedListener;
     private SsoHandler ssoHandler;
     private final Weibo weibo;
+    private WeiboAuthorizationListener weiboAuthorizationListener;
 
     public WeiboAuthorizer(final Activity activity, final String consumerKey, final String redirectUrl) {
         this.activity = activity;
@@ -131,20 +131,20 @@ public class WeiboAuthorizer {
         return activity;
     }
 
-    public WeiboAuthorizationListener getOnWeiboAuthorizedListener() {
-        return onWeiboAuthorizedListener;
-    }
-
     public Weibo getWeibo() {
         return weibo;
+    }
+
+    public WeiboAuthorizationListener getWeiboAuthorizationListener() {
+        return weiboAuthorizationListener;
     }
 
     public boolean isAuthed() {
         return isAuthed(activity);
     }
 
-    public void setOnWeiboAuthorizedListener(final WeiboAuthorizationListener onWeiboAuthorizedListener) {
-        this.onWeiboAuthorizedListener = onWeiboAuthorizedListener;
+    public void setWeiboAuthorizationListener(final WeiboAuthorizationListener weiboAuthorizationListener) {
+        this.weiboAuthorizationListener = weiboAuthorizationListener;
     }
 
     public SsoHandler startAuth() {

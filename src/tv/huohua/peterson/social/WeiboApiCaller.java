@@ -125,7 +125,7 @@ public class WeiboApiCaller {
             AsyncWeiboRunner.request(url, params, httpMethod, new WeiboRequestListener(onApiCalledListener));
             return null;
         } else {
-            authorizer.setOnWeiboAuthorizedListener(new WeiboAuthorizationListener() {
+            authorizer.setWeiboAuthorizationListener(new WeiboAuthorizationListener() {
                 @Override
                 public void onAuthorizationCanceled(final WeiboAuthorizer authorizer) {
                     handler.sendMessage(handler.obtainMessage(MSG_AUTORIZATION_FAILED, onApiCalledListener));
