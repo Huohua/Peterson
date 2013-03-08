@@ -16,14 +16,25 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 
 final public class ApplicationUtils {
-    public static Boolean isApplicationInstalled(final Context context, final String className) {
+    public static boolean isIntentAvailable(final Context context, final String className) {
         final PackageManager packageManager = context.getPackageManager();
         final Intent intent = new Intent(className);
         final List<ResolveInfo> list = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
         return (list.size() > 0);
+    }
+
+    public static boolean isPackageAvailable(final Context context, final String packageName) {
+        final PackageManager packageManager = context.getPackageManager();
+        try {
+            packageManager.getPackageInfo(packageName, PackageManager.GET_UNINSTALLED_PACKAGES);
+            return true;
+        } catch (final NameNotFoundException exception) {
+            return false;
+        }
     }
 
     private ApplicationUtils() {
