@@ -14,6 +14,7 @@ package tv.huohua.peterson.social;
 import tv.huohua.peterson.social.WeiboAccessTokenKeeper;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -99,6 +100,19 @@ public class WeiboAuthorizer {
     static private final int MSG_AUTH_FINISHED = 2;
     public static final String TAG = WeiboAuthorizer.class.getName();
 
+    public static void cancelLogin(final Context context) {
+        WeiboAccessTokenKeeper.clear(context);
+    }
+
+    public static Oauth2AccessToken getAccessToken(final Context context) {
+        return WeiboAccessTokenKeeper.readAccessToken(context);
+    }
+
+    public static boolean isAuthed(final Activity activity) {
+        final Oauth2AccessToken accessToken = WeiboAccessTokenKeeper.readAccessToken(activity);
+        return (accessToken != null && accessToken.isSessionValid());
+    }
+
     private final Activity activity;
     private WeiboAuthorizationListener onWeiboAuthorizedListener;
     private SsoHandler ssoHandler;
@@ -110,11 +124,11 @@ public class WeiboAuthorizer {
     }
 
     public void cancelLogin() {
-        WeiboAccessTokenKeeper.clear(activity);
+        cancelLogin(activity);
     }
 
     public Oauth2AccessToken getAccessToken() {
-        return WeiboAccessTokenKeeper.readAccessToken(activity);
+        return getAccessToken(activity);
     }
 
     public WeiboAuthorizationListener getOnWeiboAuthorizedListener() {
@@ -122,8 +136,7 @@ public class WeiboAuthorizer {
     }
 
     public boolean isAuthed() {
-        final Oauth2AccessToken accessToken = WeiboAccessTokenKeeper.readAccessToken(activity);
-        return (accessToken != null && accessToken.isSessionValid());
+        return isAuthed(activity);
     }
 
     public void setOnWeiboAuthorizedListener(final WeiboAuthorizationListener onWeiboAuthorizedListener) {

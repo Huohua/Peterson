@@ -28,14 +28,14 @@ public class WeiboAccessTokenKeeper {
         editor.commit();
     }
 
-    public static void clear(Context context) {
+    public static void clear(final Context context) {
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
         Editor editor = pref.edit();
         editor.clear();
         editor.commit();
     }
 
-    public static Oauth2AccessToken readAccessToken(Context context) {
+    public static Oauth2AccessToken readAccessToken(final Context context) {
         Oauth2AccessToken token = new Oauth2AccessToken();
         SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
         token.setToken(pref.getString("token", ""));
