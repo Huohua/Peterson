@@ -100,7 +100,7 @@ public class WeiboAuthorizer {
     static private final int MSG_AUTH_FINISHED = 2;
     public static final String TAG = WeiboAuthorizer.class.getName();
 
-    public static void cancelLogin(final Context context) {
+    public static void unauth(final Context context) {
         WeiboAccessTokenKeeper.clear(context);
     }
 
@@ -123,8 +123,8 @@ public class WeiboAuthorizer {
         this.weibo = Weibo.getInstance(consumerKey, redirectUrl);
     }
 
-    public void cancelLogin() {
-        cancelLogin(activity);
+    public void unauth() {
+        unauth(activity);
     }
 
     public Oauth2AccessToken getAccessToken() {
