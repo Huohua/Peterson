@@ -28,6 +28,7 @@ public class HttpRequest {
     final public static String HTTP_METHOD_POST = "POST";
     final public static String HTTP_METHOD_PUT = "PUT";
 
+    final private SortedMap<String, String> headers;
     final private String httpMethod;
     final private SortedMap<String, String> params;
     final private String url;
@@ -44,6 +45,19 @@ public class HttpRequest {
         this.httpMethod = httpMethod;
         this.url = url;
         this.params = params;
+        this.headers = new TreeMap<String, String>();
+    }
+
+    public void addHeader(final String name, final String value) {
+        headers.put(name, value);
+    }
+
+    public String getHeader(final String name) {
+        return headers.get(name);
+    }
+
+    public SortedMap<String, String> getHeaders() {
+        return headers;
     }
 
     public String getHttpMethod() {
@@ -67,7 +81,7 @@ public class HttpRequest {
         }
         return builder.toString().getBytes();
     }
-    
+
     public List<NameValuePair> getParamsAsList() {
         final List<NameValuePair> result = new ArrayList<NameValuePair>();
         final Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();

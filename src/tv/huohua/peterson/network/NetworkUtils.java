@@ -17,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -93,6 +94,13 @@ final public class NetworkUtils {
             return null;
         }
 
+        if (request.getHeaders() != null) {
+            final Iterator<Map.Entry<String, String>> iterator = request.getHeaders().entrySet().iterator();
+            while (iterator.hasNext()) {
+                final Map.Entry<String, String> kv = iterator.next();
+                requestBase.setHeader(kv.getKey(), kv.getValue());
+            }
+        }
         return client.execute(requestBase);
     }
 
