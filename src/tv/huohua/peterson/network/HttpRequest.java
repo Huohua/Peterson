@@ -70,24 +70,30 @@ public class HttpRequest {
 
     @SuppressWarnings("deprecation")
     public byte[] getParamsAsByteArray() {
-        final StringBuilder builder = new StringBuilder();
-        final Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
-        while (iterator.hasNext()) {
-            final Map.Entry<String, String> kv = iterator.next();
-            builder.append(URLEncoder.encode(kv.getKey()));
-            builder.append("=");
-            builder.append(URLEncoder.encode(kv.getValue()));
-            builder.append("&");
+        if (params == null) {
+            return new byte[0];
+        } else {
+            final StringBuilder builder = new StringBuilder();
+            final Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
+            while (iterator.hasNext()) {
+                final Map.Entry<String, String> kv = iterator.next();
+                builder.append(URLEncoder.encode(kv.getKey()));
+                builder.append("=");
+                builder.append(URLEncoder.encode(kv.getValue()));
+                builder.append("&");
+            }
+            return builder.toString().getBytes();
         }
-        return builder.toString().getBytes();
     }
 
     public List<NameValuePair> getParamsAsList() {
         final List<NameValuePair> result = new ArrayList<NameValuePair>();
-        final Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
-        while (iterator.hasNext()) {
-            final Map.Entry<String, String> kv = iterator.next();
-            result.add(new BasicNameValuePair(kv.getKey(), kv.getValue()));
+        if (params != null) {
+            final Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
+            while (iterator.hasNext()) {
+                final Map.Entry<String, String> kv = iterator.next();
+                result.add(new BasicNameValuePair(kv.getKey(), kv.getValue()));
+            }
         }
         return result;
     }
