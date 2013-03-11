@@ -68,22 +68,8 @@ public class HttpRequest {
         return params;
     }
 
-    @SuppressWarnings("deprecation")
     public byte[] getParamsAsByteArray() {
-        if (params == null) {
-            return new byte[0];
-        } else {
-            final StringBuilder builder = new StringBuilder();
-            final Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
-            while (iterator.hasNext()) {
-                final Map.Entry<String, String> kv = iterator.next();
-                builder.append(URLEncoder.encode(kv.getKey()));
-                builder.append("=");
-                builder.append(URLEncoder.encode(kv.getValue()));
-                builder.append("&");
-            }
-            return builder.toString().getBytes();
-        }
+        return getParamsAsString().getBytes();
     }
 
     public List<NameValuePair> getParamsAsList() {
@@ -96,6 +82,26 @@ public class HttpRequest {
             }
         }
         return result;
+    }
+
+    @SuppressWarnings("deprecation")
+    public String getParamsAsString() {
+        if (params == null) {
+            return "";
+        } else {
+            final StringBuilder builder = new StringBuilder();
+            final Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
+            while (iterator.hasNext()) {
+                final Map.Entry<String, String> kv = iterator.next();
+                if (builder.length() > 0){
+                    builder.append("&");
+                }
+                builder.append(URLEncoder.encode(kv.getKey()));
+                builder.append("=");
+                builder.append(URLEncoder.encode(kv.getValue()));
+            }
+            return builder.toString();
+        }
     }
 
     public String getUrl() {
