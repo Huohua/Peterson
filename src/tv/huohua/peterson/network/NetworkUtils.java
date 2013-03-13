@@ -82,10 +82,16 @@ final public class NetworkUtils {
         } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_POST)) {
             final HttpPost post = new HttpPost(request.getUrl());
             post.setEntity(new UrlEncodedFormEntity(request.getParamsAsList()));
+            if (request.getEntity() != null) {
+                post.setEntity(request.getEntity());
+            }
             requestBase = post;
         } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_PUT)) {
             final HttpPut put = new HttpPut(request.getUrl());
             put.setEntity(new UrlEncodedFormEntity(request.getParamsAsList()));
+            if (request.getEntity() != null) {
+                put.setEntity(request.getEntity());
+            }
             requestBase = put;
         } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_DELETE)) {
             final HttpDelete delete = new HttpDelete(request.getUrl());

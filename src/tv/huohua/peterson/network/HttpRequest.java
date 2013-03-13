@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -28,9 +29,10 @@ public class HttpRequest {
     final public static String HTTP_METHOD_POST = "POST";
     final public static String HTTP_METHOD_PUT = "PUT";
 
-    final private SortedMap<String, String> headers;
+    private HttpEntity entity;
+    private SortedMap<String, String> headers;
     final private String httpMethod;
-    final private SortedMap<String, String> params;
+    private SortedMap<String, String> params;
     final private String url;
 
     public HttpRequest(final String url) {
@@ -50,6 +52,10 @@ public class HttpRequest {
 
     public void addHeader(final String name, final String value) {
         headers.put(name, value);
+    }
+
+    public HttpEntity getEntity() {
+        return entity;
     }
 
     public String getHeader(final String name) {
@@ -93,7 +99,7 @@ public class HttpRequest {
             final Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
             while (iterator.hasNext()) {
                 final Map.Entry<String, String> kv = iterator.next();
-                if (builder.length() > 0){
+                if (builder.length() > 0) {
                     builder.append("&");
                 }
                 builder.append(URLEncoder.encode(kv.getKey()));
@@ -106,5 +112,17 @@ public class HttpRequest {
 
     public String getUrl() {
         return url;
+    }
+
+    public void setEntity(final HttpEntity entity) {
+        this.entity = entity;
+    }
+
+    public void setHeaders(final SortedMap<String, String> headers) {
+        this.headers = headers;
+    }
+
+    public void setParams(final SortedMap<String, String> params) {
+        this.params = params;
     }
 }
