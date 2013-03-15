@@ -78,12 +78,14 @@ final public class NetworkUtils {
 
         final HttpRequestBase requestBase;
         if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_GET)) {
-            requestBase = new HttpGet(request.getUrl());
+            final HttpGet get = new HttpGet(request.getUrl());
+            requestBase = get;
         } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_POST)) {
             final HttpPost post = new HttpPost(request.getUrl());
-            post.setEntity(new UrlEncodedFormEntity(request.getParamsAsList()));
             if (request.getEntity() != null) {
                 post.setEntity(request.getEntity());
+            } else {
+                post.setEntity(new UrlEncodedFormEntity(request.getParamsAsList()));
             }
             requestBase = post;
         } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_PUT)) {
@@ -91,6 +93,8 @@ final public class NetworkUtils {
             put.setEntity(new UrlEncodedFormEntity(request.getParamsAsList()));
             if (request.getEntity() != null) {
                 put.setEntity(request.getEntity());
+            } else {
+                put.setEntity(new UrlEncodedFormEntity(request.getParamsAsList()));
             }
             requestBase = put;
         } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_DELETE)) {
@@ -100,6 +104,9 @@ final public class NetworkUtils {
             return null;
         }
 
+        if (request.getParams() != null) {
+            requestBase.setParams(request.getParamsAsHttpParams());
+        }
         if (request.getHeaders() != null) {
             final Iterator<Map.Entry<String, String>> iterator = request.getHeaders().entrySet().iterator();
             while (iterator.hasNext()) {

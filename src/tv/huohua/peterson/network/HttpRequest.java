@@ -22,6 +22,8 @@ import java.util.TreeMap;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
 
 public class HttpRequest {
     final public static String HTTP_METHOD_DELETE = "DELETE";
@@ -76,6 +78,16 @@ public class HttpRequest {
 
     public byte[] getParamsAsByteArray() {
         return getParamsAsString().getBytes();
+    }
+
+    public HttpParams getParamsAsHttpParams() {
+        final HttpParams params = new BasicHttpParams();
+        final Iterator<Map.Entry<String, String>> iterator = this.params.entrySet().iterator();
+        while (iterator.hasNext()) {
+            final Map.Entry<String, String> kv = iterator.next();
+            params.setParameter(kv.getKey(), kv.getValue());
+        }
+        return params;
     }
 
     public List<NameValuePair> getParamsAsList() {
