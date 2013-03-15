@@ -22,8 +22,6 @@ import java.util.TreeMap;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpParams;
 
 public class HttpRequest {
     final public static String HTTP_METHOD_DELETE = "DELETE";
