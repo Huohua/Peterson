@@ -78,7 +78,14 @@ final public class NetworkUtils {
 
         final HttpRequestBase requestBase;
         if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_GET)) {
-            final HttpGet get = new HttpGet(request.getUrl());
+            final StringBuilder builder = new StringBuilder(request.getUrl());
+            if (request.getParams() != null) {
+                if (!request.getUrl().contains("?")) {
+                    builder.append("?");
+                }
+                builder.append(request.getParamsAsString());
+            }
+            final HttpGet get = new HttpGet(builder.toString());
             requestBase = get;
         } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_POST)) {
             final HttpPost post = new HttpPost(request.getUrl());
@@ -104,9 +111,6 @@ final public class NetworkUtils {
             return null;
         }
 
-        if (request.getParams() != null) {
-            requestBase.setParams(request.getParamsAsHttpParams());
-        }
         if (request.getHeaders() != null) {
             final Iterator<Map.Entry<String, String>> iterator = request.getHeaders().entrySet().iterator();
             while (iterator.hasNext()) {

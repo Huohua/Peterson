@@ -80,16 +80,6 @@ public class HttpRequest {
         return getParamsAsString().getBytes();
     }
 
-    public HttpParams getParamsAsHttpParams() {
-        final HttpParams params = new BasicHttpParams();
-        final Iterator<Map.Entry<String, String>> iterator = this.params.entrySet().iterator();
-        while (iterator.hasNext()) {
-            final Map.Entry<String, String> kv = iterator.next();
-            params.setParameter(kv.getKey(), kv.getValue());
-        }
-        return params;
-    }
-
     public List<NameValuePair> getParamsAsList() {
         final List<NameValuePair> result = new ArrayList<NameValuePair>();
         if (params != null) {
