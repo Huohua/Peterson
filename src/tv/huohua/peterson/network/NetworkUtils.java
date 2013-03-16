@@ -82,6 +82,8 @@ final public class NetworkUtils {
             if (request.getParams() != null) {
                 if (!request.getUrl().contains("?")) {
                     builder.append("?");
+                } else {
+                    builder.append("&");
                 }
                 builder.append(request.getParamsAsString());
             }
@@ -105,7 +107,16 @@ final public class NetworkUtils {
             }
             requestBase = put;
         } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_DELETE)) {
-            final HttpDelete delete = new HttpDelete(request.getUrl());
+            final StringBuilder builder = new StringBuilder(request.getUrl());
+            if (request.getParams() != null) {
+                if (!request.getUrl().contains("?")) {
+                    builder.append("?");
+                } else {
+                    builder.append("&");
+                }
+                builder.append(request.getParamsAsString());
+            }
+            final HttpDelete delete = new HttpDelete(builder.toString());
             requestBase = delete;
         } else {
             return null;
