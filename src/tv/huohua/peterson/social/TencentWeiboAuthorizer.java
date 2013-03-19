@@ -74,8 +74,28 @@ public class TencentWeiboAuthorizer implements ISocialAuthorizer {
         this.redirectUri = redirectUri;
     }
 
+    public Activity getActivity() {
+        return activity;
+    }
+
     public AuthorizationListener getAuthorizationListener() {
         return authorizationListener;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public OAuthV2 getOAuthV2Token() {
+        return getOAuthV2Token(activity);
+    }
+
+    public String getRedirectUri() {
+        return redirectUri;
     }
 
     @Override
