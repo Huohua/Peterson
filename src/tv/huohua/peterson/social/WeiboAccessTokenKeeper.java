@@ -21,23 +21,23 @@ public class WeiboAccessTokenKeeper {
     private static final String PREFERENCES_NAME = "com_weibo_sdk_android";
 
     public static void keepAccessToken(final Context context, final Oauth2AccessToken token) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
-        Editor editor = pref.edit();
+        final SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+        final Editor editor = pref.edit();
         editor.putString("token", token.getToken());
         editor.putLong("expiresTime", token.getExpiresTime());
         editor.commit();
     }
 
     public static void clear(final Context context) {
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
-        Editor editor = pref.edit();
+        final SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+        final Editor editor = pref.edit();
         editor.clear();
         editor.commit();
     }
 
     public static Oauth2AccessToken readAccessToken(final Context context) {
-        Oauth2AccessToken token = new Oauth2AccessToken();
-        SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
+        final Oauth2AccessToken token = new Oauth2AccessToken();
+        final SharedPreferences pref = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
         token.setToken(pref.getString("token", ""));
         token.setExpiresTime(pref.getLong("expiresTime", 0));
         return token;

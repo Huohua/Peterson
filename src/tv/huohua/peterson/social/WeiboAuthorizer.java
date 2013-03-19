@@ -27,7 +27,7 @@ import com.weibo.sdk.android.WeiboDialogError;
 import com.weibo.sdk.android.WeiboException;
 import com.weibo.sdk.android.sso.SsoHandler;
 
-public class WeiboAuthorizer {
+public class WeiboAuthorizer implements ISocialAuthorizer {
     class AuthDialogListener implements WeiboAuthListener {
         @Override
         public void onCancel() {
@@ -59,7 +59,7 @@ public class WeiboAuthorizer {
         }
     }
 
-    public interface WeiboAuthorizationListener {
+    public interface AuthorizationListener {
         void onAuthorizationCanceled(WeiboAuthorizer authorizer);
 
         void onAuthorizationError(WeiboAuthorizer authorizer);
@@ -74,18 +74,18 @@ public class WeiboAuthorizer {
                 final WeiboAuthorizer authorizer = (WeiboAuthorizer) message.obj;
                 switch (message.what) {
                 case MSG_AUTH_CANCELED:
-                    if (authorizer.weiboAuthorizationListener != null) {
-                        authorizer.weiboAuthorizationListener.onAuthorizationCanceled(authorizer);
+                    if (authorizer.authorizationListener != null) {
+                        authorizer.authorizationListener.onAuthorizationCanceled(authorizer);
                     }
                     break;
                 case MSG_AUTH_ERROR:
-                    if (authorizer.weiboAuthorizationListener != null) {
-                        authorizer.weiboAuthorizationListener.onAuthorizationError(authorizer);
+                    if (authorizer.authorizationListener != null) {
+                        authorizer.authorizationListener.onAuthorizationError(authorizer);
                     }
                     break;
                 case MSG_AUTH_FINISHED:
-                    if (authorizer.weiboAuthorizationListener != null) {
-                        authorizer.weiboAuthorizationListener.onAuthorizationSucceeded(authorizer);
+                    if (authorizer.authorizationListener != null) {
+                        authorizer.authorizationListener.onAuthorizationSucceeded(authorizer);
                     }
                     break;
                 default:
@@ -114,9 +114,9 @@ public class WeiboAuthorizer {
     }
 
     private final Activity activity;
+    private AuthorizationListener authorizationListener;
     private SsoHandler ssoHandler;
     private final Weibo weibo;
-    private WeiboAuthorizationListener weiboAuthorizationListener;
 
     public WeiboAuthorizer(final Activity activity, final String consumerKey, final String redirectUrl) {
         this.activity = activity;
@@ -131,20 +131,21 @@ public class WeiboAuthorizer {
         return activity;
     }
 
+    public AuthorizationListener getAuthorizationListener() {
+        return authorizationListener;
+    }
+
     public Weibo getWeibo() {
         return weibo;
     }
 
-    public WeiboAuthorizationListener getWeiboAuthorizationListener() {
-        return weiboAuthorizationListener;
-    }
-
+    @Override
     public boolean isAuthed() {
         return isAuthed(activity);
     }
 
-    public void setWeiboAuthorizationListener(final WeiboAuthorizationListener weiboAuthorizationListener) {
-        this.weiboAuthorizationListener = weiboAuthorizationListener;
+    public void setAuthorizationListener(final AuthorizationListener authorizationListener) {
+        this.authorizationListener = authorizationListener;
     }
 
     public SsoHandler startAuth() {
@@ -160,6 +161,7 @@ public class WeiboAuthorizer {
         return null;
     }
 
+    @Override
     public void unauth() {
         unauth(activity);
     }

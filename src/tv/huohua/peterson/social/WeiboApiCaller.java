@@ -13,7 +13,7 @@ package tv.huohua.peterson.social;
 
 import java.io.IOException;
 
-import tv.huohua.peterson.social.WeiboAuthorizer.WeiboAuthorizationListener;
+import tv.huohua.peterson.social.WeiboAuthorizer.AuthorizationListener;
 
 import com.weibo.sdk.android.WeiboException;
 import com.weibo.sdk.android.WeiboParameters;
@@ -25,6 +25,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+
+/**
+ * @author Zheng Sun
+ * 
+ *         This class contains WeiboAuthorizer, that is, if current account is
+ *         not authorized, the caller will call WeiboAuthorizer automatically.
+ */
 
 public class WeiboApiCaller {
     public interface OnApiCalledListener {
@@ -104,7 +111,7 @@ public class WeiboApiCaller {
             }
         }
     };
-    
+
     static private final String INTENT_KEY_EXCEPTION = "exception";
     static private final String INTENT_KEY_RESULT = "result";
 
@@ -125,7 +132,7 @@ public class WeiboApiCaller {
             AsyncWeiboRunner.request(url, params, httpMethod, new WeiboRequestListener(onApiCalledListener));
             return null;
         } else {
-            authorizer.setWeiboAuthorizationListener(new WeiboAuthorizationListener() {
+            authorizer.setAuthorizationListener(new AuthorizationListener() {
                 @Override
                 public void onAuthorizationCanceled(final WeiboAuthorizer authorizer) {
                     handler.sendMessage(handler.obtainMessage(MSG_AUTORIZATION_FAILED, onApiCalledListener));
