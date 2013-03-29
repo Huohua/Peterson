@@ -94,16 +94,16 @@ final public class NetworkUtils {
             if (request.getEntity() != null) {
                 post.setEntity(request.getEntity());
             } else {
-                post.setEntity(new UrlEncodedFormEntity(request.getParamsAsList()));
+                post.setEntity(new UrlEncodedFormEntity(request.getParamsAsList(), "UTF-8"));
             }
             requestBase = post;
         } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_PUT)) {
             final HttpPut put = new HttpPut(request.getUrl());
-            put.setEntity(new UrlEncodedFormEntity(request.getParamsAsList()));
+            put.setEntity(new UrlEncodedFormEntity(request.getParamsAsList(), "UTF-8"));
             if (request.getEntity() != null) {
                 put.setEntity(request.getEntity());
             } else {
-                put.setEntity(new UrlEncodedFormEntity(request.getParamsAsList()));
+                put.setEntity(new UrlEncodedFormEntity(request.getParamsAsList(), "UTF-8"));
             }
             requestBase = put;
         } else if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_DELETE)) {
