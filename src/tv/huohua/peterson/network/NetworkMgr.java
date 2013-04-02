@@ -26,7 +26,7 @@ import android.util.Log;
 
 final public class NetworkMgr {
     public interface OnApiCallFinishedListener {
-        void onAPICallFinished(ApiCallResponse<?> response);
+        void onApiCallFinished(ApiCallResponse<?> response);
     }
 
     private static Handler handler = new Handler() {
@@ -38,7 +38,7 @@ final public class NetworkMgr {
                     if (msg.obj instanceof ApiCallResponse) {
                         final ApiCallResponse<?> response = (ApiCallResponse<?>) msg.obj;
                         for (final OnApiCallFinishedListener listener : instance.listeners) {
-                            listener.onAPICallFinished(response);
+                            listener.onApiCallFinished(response);
                         }
                     }
                     break;
