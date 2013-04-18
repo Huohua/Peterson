@@ -35,7 +35,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
@@ -47,32 +49,41 @@ import android.net.NetworkInfo;
 final public class NetworkUtils {
     final private static DefaultHttpClient HTTP_CLIENT;
     static {
-        HTTP_CLIENT = new DefaultHttpClient();
-        HTTP_CLIENT.addRequestInterceptor(new HttpRequestInterceptor() {
-            @Override
-            public void process(org.apache.http.HttpRequest request, HttpContext context) throws HttpException,
-                    IOException {
-                if (!request.containsHeader("Accept-Encoding")) {
-                    request.addHeader("Accept-Encoding", "gzip");
+        synchronized (NetworkUtils.class) {
+            final DefaultHttpClient client = new DefaultHttpClient();
+            final ClientConnectionManager mgr = client.getConnectionManager();
+            final HttpParams params = client.getParams();
+            HttpConnectionParams.setConnectionTimeout(params, 40 * 1000);
+            HttpConnectionParams.setSoTimeout(params, 30 * 1000);
+
+            HTTP_CLIENT = new DefaultHttpClient(new ThreadSafeClientConnManager(params, mgr.getSchemeRegistry()),
+                    params);
+            HTTP_CLIENT.addRequestInterceptor(new HttpRequestInterceptor() {
+                @Override
+                public void process(org.apache.http.HttpRequest request, HttpContext context) throws HttpException,
+                        IOException {
+                    if (!request.containsHeader("Accept-Encoding")) {
+                        request.addHeader("Accept-Encoding", "gzip");
+                    }
                 }
-            }
-        });
-        HTTP_CLIENT.addResponseInterceptor(new HttpResponseInterceptor() {
-            public void process(final HttpResponse response, final HttpContext context) throws HttpException,
-                    IOException {
-                final HttpEntity entity = response.getEntity();
-                final Header encodingHeader = entity.getContentEncoding();
-                if (encodingHeader != null) {
-                    final HeaderElement[] codecs = encodingHeader.getElements();
-                    for (int i = 0; i < codecs.length; i++) {
-                        if (codecs[i].getName().equalsIgnoreCase("gzip")) {
-                            response.setEntity(new GzipDecompressingEntity(response.getEntity()));
-                            return;
+            });
+            HTTP_CLIENT.addResponseInterceptor(new HttpResponseInterceptor() {
+                public void process(final HttpResponse response, final HttpContext context) throws HttpException,
+                        IOException {
+                    final HttpEntity entity = response.getEntity();
+                    final Header encodingHeader = entity.getContentEncoding();
+                    if (encodingHeader != null) {
+                        final HeaderElement[] codecs = encodingHeader.getElements();
+                        for (int i = 0; i < codecs.length; i++) {
+                            if (codecs[i].getName().equalsIgnoreCase("gzip")) {
+                                response.setEntity(new GzipDecompressingEntity(response.getEntity()));
+                                return;
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     public static Map<String, List<String>> getQueryParams(final String url) {
@@ -104,10 +115,6 @@ final public class NetworkUtils {
     }
 
     public static HttpResponse httpQuery(final HttpRequest request) throws ClientProtocolException, IOException {
-        final HttpParams params = HTTP_CLIENT.getParams();
-        HttpConnectionParams.setConnectionTimeout(params, 40 * 1000);
-        HttpConnectionParams.setSoTimeout(params, 30 * 1000);
-
         final HttpRequestBase requestBase;
         if (request.getHttpMethod().equals(HttpRequest.HTTP_METHOD_GET)) {
             final StringBuilder builder = new StringBuilder(request.getUrl());
