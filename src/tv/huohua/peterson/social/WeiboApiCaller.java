@@ -153,6 +153,9 @@ public class WeiboApiCaller {
 
                 @Override
                 public void onAuthorizationSucceeded(final WeiboAuthorizer authorizer) {
+                    if (progressDialog != null) {
+                        progressDialog.show();
+                    }
                     params.add("access_token", authorizer.getAccessToken().getToken());
                     AsyncWeiboRunner.request(url, params, httpMethod, new WeiboRequestListener(onApiCalledListener));
                 }
