@@ -14,17 +14,17 @@ package tv.huohua.peterson.social;
 import java.io.IOException;
 
 import tv.huohua.peterson.social.WeiboAuthorizer.AuthorizationListener;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import com.weibo.sdk.android.WeiboException;
 import com.weibo.sdk.android.WeiboParameters;
 import com.weibo.sdk.android.net.AsyncWeiboRunner;
 import com.weibo.sdk.android.net.RequestListener;
 import com.weibo.sdk.android.sso.SsoHandler;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 
 /**
  * @author Zheng Sun
@@ -127,7 +127,15 @@ public class WeiboApiCaller {
 
     public SsoHandler callApi(final String url, final String httpMethod, final WeiboParameters params,
             final OnApiCalledListener onApiCalledListener) {
+        return callApi(url, httpMethod, params, onApiCalledListener, null);
+    }
+
+    public SsoHandler callApi(final String url, final String httpMethod, final WeiboParameters params,
+            final OnApiCalledListener onApiCalledListener, final ProgressDialog progressDialog) {
         if (authorizer.isAuthed()) {
+            if (progressDialog != null) {
+                progressDialog.show();
+            }
             params.add("access_token", authorizer.getAccessToken().getToken());
             AsyncWeiboRunner.request(url, params, httpMethod, new WeiboRequestListener(onApiCalledListener));
             return null;
