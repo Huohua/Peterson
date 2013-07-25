@@ -19,6 +19,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 
 import com.weibo.sdk.android.Oauth2AccessToken;
 import com.weibo.sdk.android.Weibo;
@@ -111,6 +113,9 @@ public class WeiboAuthorizer implements ISocialAuthorizer {
 
     public static void unauth(final Context context) {
         WeiboAccessTokenKeeper.clear(context);
+        CookieSyncManager.createInstance(context);
+        CookieSyncManager.getInstance().startSync();
+        CookieManager.getInstance().removeAllCookie();
     }
 
     private final Activity activity;
