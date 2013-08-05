@@ -17,37 +17,37 @@ import android.view.MotionEvent;
 import android.widget.ListView;
 
 public class HHListView extends ListView {
-	private boolean interceptTouchEventAllowed;
+    private boolean interceptTouchEventAllowed;
 
-	public HHListView(final Context context) {
-		super(context);
-		init();
-	}
+    public HHListView(final Context context) {
+        super(context);
+        init();
+    }
 
-	public HHListView(final Context context, final AttributeSet attrs) {
-		super(context, attrs);
-		init();
-	}
+    public HHListView(final Context context, final AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
 
-	public HHListView(final Context context, final AttributeSet attrs, final int defStyle) {
-		super(context, attrs, defStyle);
-		init();
-	}
+    public HHListView(final Context context, final AttributeSet attrs, final int defStyle) {
+        super(context, attrs, defStyle);
+        init();
+    }
 
-	private void init() {
-		interceptTouchEventAllowed = true;
-	}
+    private void init() {
+        interceptTouchEventAllowed = true;
+    }
 
-	public boolean isInterceptTouchEventAllowed() {
-		return interceptTouchEventAllowed;
-	}
+    public boolean isInterceptTouchEventAllowed() {
+        return interceptTouchEventAllowed;
+    }
 
-	@Override
-	public boolean onInterceptTouchEvent(final MotionEvent event) {
-		return (interceptTouchEventAllowed) ? super.onInterceptTouchEvent(event) : false;
-	}
+    @Override
+    public boolean onInterceptTouchEvent(final MotionEvent event) {
+        return (interceptTouchEventAllowed) ? super.onInterceptTouchEvent(event) : false;
+    }
 
-	public void setInterceptTouchEventAllowed(boolean interceptTouchEventAllowed) {
-		this.interceptTouchEventAllowed = interceptTouchEventAllowed;
-	}
+    public void setInterceptTouchEventAllowed(boolean interceptTouchEventAllowed) {
+        this.interceptTouchEventAllowed = interceptTouchEventAllowed;
+    }
 }

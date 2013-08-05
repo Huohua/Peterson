@@ -11,12 +11,12 @@
 
 package tv.huohua.peterson.view;
 
-import com.huohua.android.peterson.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.RelativeLayout;
+
+import com.huohua.android.peterson.R;
 
 public class FixedAspectRatioRelativeLayout extends RelativeLayout {
     private float aspectRatio;

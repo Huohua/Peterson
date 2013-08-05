@@ -17,8 +17,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import tv.huohua.peterson.api.ApiCallResponse;
 import tv.huohua.peterson.api.AbsApi;
+import tv.huohua.peterson.api.ApiCallResponse;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;

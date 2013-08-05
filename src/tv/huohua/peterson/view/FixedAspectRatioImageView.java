@@ -11,12 +11,12 @@
 
 package tv.huohua.peterson.view;
 
-import com.huohua.android.peterson.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import com.huohua.android.peterson.R;
 
 public class FixedAspectRatioImageView extends ImageView {
     private float aspectRatio;
