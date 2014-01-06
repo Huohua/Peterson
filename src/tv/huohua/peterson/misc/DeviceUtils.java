@@ -15,6 +15,7 @@ import java.util.UUID;
 
 import android.content.Context;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
 public class DeviceUtils {
     private static String DEVICE_ID;
@@ -36,5 +37,20 @@ public class DeviceUtils {
     }
 
     private DeviceUtils() {
+    }
+    
+    public static String getModel() {
+        String model = android.os.Build.MODEL;
+        return TextUtils.isEmpty(model) ? "N/A" : model;
+    }
+    
+    public static String getBrand() {
+        String brand = android.os.Build.BRAND;
+        return TextUtils.isEmpty(brand) ? "N/A" : brand;
+    }
+    
+    public static String getOSVersion() {
+        String version = android.os.Build.VERSION.RELEASE;
+        return TextUtils.isEmpty(version) ? "N/A" : version;
     }
 }
