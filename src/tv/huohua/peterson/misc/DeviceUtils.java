@@ -53,4 +53,9 @@ public class DeviceUtils {
         String version = android.os.Build.VERSION.RELEASE;
         return TextUtils.isEmpty(version) ? "N/A" : version;
     }
+    
+    public static String getCPUArch() {
+        String cpuArch = System.getProperty("os.arch");
+        return TextUtils.isEmpty(cpuArch) ? "N/A" : cpuArch;
+    }
 }
