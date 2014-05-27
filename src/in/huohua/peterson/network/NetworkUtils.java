@@ -175,6 +175,12 @@ final public class NetworkUtils {
         NetworkInfo info = cm.getActiveNetworkInfo();
         return (info != null && info.isConnected());
     }
+    
+    public static boolean isWifiConnected(Context context) {
+    	ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+    	return mWifi.isConnected();
+    }
 
     private NetworkUtils() {
     }
