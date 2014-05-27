@@ -9,7 +9,7 @@
  *     Zheng Sun - initial API and implementation
  ******************************************************************************/
 
-package tv.huohua.peterson.view;
+package in.huohua.peterson.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -9,7 +9,7 @@
  *     Zheng Sun - initial API and implementation
  ******************************************************************************/
 
-package tv.huohua.peterson.network;
+package in.huohua.peterson.network;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,8 +17,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import tv.huohua.peterson.api.AbsApi;
-import tv.huohua.peterson.api.ApiCallResponse;
+import in.huohua.peterson.api.AbsApi;
+import in.huohua.peterson.api.ApiCallResponse;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;

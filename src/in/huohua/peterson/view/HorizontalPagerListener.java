@@ -9,27 +9,10 @@
  *     Zheng Sun - initial API and implementation
  ******************************************************************************/
 
-package tv.huohua.peterson.api;
+package in.huohua.peterson.view;
 
-abstract public class AbsListApi<T> extends AbsApi<T[]> {
-    private static final long serialVersionUID = 1L;
+public interface HorizontalPagerListener {
+    void onScreenSwitch(int currentScreen);
 
-    protected int offset;
-    protected int limit;
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(final int limit) {
-        this.limit = limit;
-    }
-
-    public void setOffset(final int offset) {
-        this.offset = offset;
-    }
+    void onScrollChanged(int l, int t, int oldl, int oldt);
 }

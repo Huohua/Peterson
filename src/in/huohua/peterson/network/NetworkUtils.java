@@ -9,7 +9,7 @@
  *     Zheng Sun - initial API and implementation
  ******************************************************************************/
 
-package tv.huohua.peterson.network;
+package in.huohua.peterson.network;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

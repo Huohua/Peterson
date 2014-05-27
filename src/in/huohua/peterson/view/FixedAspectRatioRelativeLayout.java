@@ -9,30 +9,30 @@
  *     Zheng Sun - initial API and implementation
  ******************************************************************************/
 
-package tv.huohua.peterson.view;
+package in.huohua.peterson.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.huohua.android.peterson.R;
 
-public class FixedAspectRatioImageView extends ImageView {
+public class FixedAspectRatioRelativeLayout extends RelativeLayout {
     private float aspectRatio;
     private boolean verticalAppending;
 
-    public FixedAspectRatioImageView(final Context context) {
+    public FixedAspectRatioRelativeLayout(final Context context) {
         super(context);
     }
 
-    public FixedAspectRatioImageView(final Context context, final AttributeSet attrs) {
+    public FixedAspectRatioRelativeLayout(final Context context, final AttributeSet attrs) {
         super(context, attrs);
 
         init(context, attrs);
     }
 
-    public FixedAspectRatioImageView(final Context context, final AttributeSet attrs, final int defStyle) {
+    public FixedAspectRatioRelativeLayout(final Context context, final AttributeSet attrs, final int defStyle) {
         super(context, attrs, defStyle);
 
         init(context, attrs);

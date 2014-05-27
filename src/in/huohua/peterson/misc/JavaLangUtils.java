@@ -9,7 +9,7 @@
  *     Zheng Sun - initial API and implementation
  ******************************************************************************/
 
-package tv.huohua.peterson.misc;
+package in.huohua.peterson.misc;
 
 final public class JavaLangUtils {
     public static String implode(final int[] input, final String seperator) {

@@ -1,4 +1,4 @@
-package tv.huohua.peterson.misc;
+package in.huohua.peterson.misc;
 
 public class Pair<L, R> {
     private final L left;
