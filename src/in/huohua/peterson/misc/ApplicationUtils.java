@@ -37,6 +37,12 @@ final public class ApplicationUtils {
         }
     }
 
+    public static boolean isIntentAvailable(final Context context, Intent intent) {
+        final List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent, PackageManager.GET_INTENT_FILTERS);
+        if (list != null && list.size() > 0) return true;
+        return false;
+    }
+
     private ApplicationUtils() {
     }
 }
