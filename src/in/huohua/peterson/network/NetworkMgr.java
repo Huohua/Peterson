@@ -11,8 +11,10 @@
 
 package in.huohua.peterson.network;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -78,11 +80,11 @@ final public class NetworkMgr {
 
     final private Context context;
     final private ThreadPoolExecutor executor;
-    final private List<OnApiCallFinishedListener> listeners;
+    final private ConcurrentLinkedQueue<OnApiCallFinishedListener> listeners;
 
     private NetworkMgr(final Context context) {
         this.context = context;
-        this.listeners = new LinkedList<OnApiCallFinishedListener>();
+        this.listeners = new ConcurrentLinkedQueue<OnApiCallFinishedListener>();
         this.executor = new ThreadPoolExecutor(2, 3, 60, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
     }
 
