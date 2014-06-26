@@ -56,7 +56,7 @@ final public class NetworkMgr {
     static final private String TAG = NetworkMgr.class.getName();
 
     public static ApiCallResponse<?> doApiCall(final Context context, final AbsApi<?> api) {
-        ApiCallResponse<?> response;
+        ApiCallResponse<?> response = null;
         try {
             response = api.call(context);
         } catch (final Exception exception) {
