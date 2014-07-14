@@ -43,7 +43,6 @@ public class HHApiListLoader<T> implements OnApiCallFinishedListener {
     final private PLA_ListView pla_ListView;
     private LoadingFinishedJudger<T> loadingFinishedJudger;
     private OnLoadListener onLoadListener;
-    private int headerSize = 0;
 
     public HHApiListLoader(final IHHListAdapter<T> adapter, final AbsListView listView, final AbsListApi<T> listAPI) {
         this.listApi = listAPI;
@@ -92,10 +91,6 @@ public class HHApiListLoader<T> implements OnApiCallFinishedListener {
      * loading).
      */
     public void init() {
-        if (adapter.getListData() != null) {
-            this.dataList = adapter.getListData();
-            headerSize = adapter.getListData().size();
-        }
         if (listView != null) {
             listView.setOnScrollListener(new OnScrollListener() {
                 @Override
@@ -182,8 +177,8 @@ public class HHApiListLoader<T> implements OnApiCallFinishedListener {
                 }
                 if (result != null) {
                     final int offset = listApi.getOffset();
-                    while (dataList.size() - headerSize > offset) {
-                        dataList.remove(offset + headerSize);
+                    while (dataList.size() > offset) {
+                        dataList.remove(offset);
                     }
                     for (int i = 0; i < result.length; i++) {
                         dataList.add(result[i]);
