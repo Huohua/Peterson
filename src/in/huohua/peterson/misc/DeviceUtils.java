@@ -14,13 +14,21 @@ package in.huohua.peterson.misc;
 import java.util.UUID;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
 public class DeviceUtils {
+    final private static String CACHE_KEY_DEVICE_ID = "DeviceUtils.DeviceId";
+    final private static String CACHE_NAME = "DeviceUtils";
     private static String DEVICE_ID;
 
     public static String getDeviceId(final Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(CACHE_NAME, Context.MODE_PRIVATE);
+        if (DEVICE_ID == null) {
+            DEVICE_ID = sharedPreferences.getString(CACHE_KEY_DEVICE_ID, null);
+        }
         if (DEVICE_ID == null) {
             final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
             final String tmDevice, tmSerial, androidId;
@@ -32,30 +40,51 @@ public class DeviceUtils {
             final UUID deviceUuid = new UUID(androidId.hashCode(), ((long) tmDevice.hashCode() << 32)
                     | tmSerial.hashCode());
             DEVICE_ID = deviceUuid.toString();
+
+            if (couldGetDeviceId(context) && !TextUtils.isEmpty(DEVICE_ID)) {
+                Editor editor = sharedPreferences.edit();
+                editor.putString(CACHE_KEY_DEVICE_ID, DEVICE_ID);
+                editor.commit();
+            }
         }
         return DEVICE_ID;
     }
 
     private DeviceUtils() {
     }
-    
+
     public static String getModel() {
         String model = android.os.Build.MODEL;
         return TextUtils.isEmpty(model) ? "N/A" : model;
     }
-    
+
     public static String getBrand() {
         String brand = android.os.Build.BRAND;
         return TextUtils.isEmpty(brand) ? "N/A" : brand;
     }
-    
+
     public static String getOSVersion() {
         String version = android.os.Build.VERSION.RELEASE;
         return TextUtils.isEmpty(version) ? "N/A" : version;
     }
-    
+
     public static String getCPUArch() {
         String cpuArch = System.getProperty("os.arch");
         return TextUtils.isEmpty(cpuArch) ? "N/A" : cpuArch;
+    }
+
+    public static boolean couldGetDeviceId(final Context context) {
+        final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (TextUtils.isEmpty(tm.getDeviceId())) {
+            return false;
+        }
+        if (TextUtils.isEmpty(tm.getSimSerialNumber())) {
+            return false;
+        }
+        if (TextUtils.isEmpty(android.provider.Settings.Secure.getString(context.getContentResolver(),
+                android.provider.Settings.Secure.ANDROID_ID))) {
+            return false;
+        }
+        return true;
     }
 }
