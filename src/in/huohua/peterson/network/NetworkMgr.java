@@ -92,7 +92,7 @@ final public class NetworkMgr {
      * This method has to be called in MAIN thread.
      */
     public void addOnApiCallFinishedListener(final OnApiCallFinishedListener listener) {
-        listeners.add(listener);
+        if (!listeners.contains(listener)) listeners.add(listener);
         Log.i(TAG, "addListener");
     }
 
