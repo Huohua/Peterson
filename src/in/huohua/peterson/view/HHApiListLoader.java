@@ -29,6 +29,7 @@ public class HHApiListLoader<T> implements OnApiCallFinishedListener {
     }
 
     static final private long LOADING_EXPIRE_TIME = 500;
+    private int dataListOffset = 0;
 
     private IHHListAdapter<T> adapter;
     private long cacheExpireTime;
@@ -64,6 +65,10 @@ public class HHApiListLoader<T> implements OnApiCallFinishedListener {
         this.isLoadOnce = false;
         this.listView = null;
         this.pla_ListView = pla_ListView;
+    }
+
+    public void setDataListOffset(int dataListOffset) {
+        this.dataListOffset = dataListOffset;
     }
 
     public long getCacheExpireTime() {
@@ -177,8 +182,8 @@ public class HHApiListLoader<T> implements OnApiCallFinishedListener {
                 }
                 if (result != null) {
                     final int offset = listApi.getOffset();
-                    while (dataList.size() > offset) {
-                        dataList.remove(offset);
+                    while (dataList.size() - dataListOffset > offset) {
+                        dataList.remove(offset + dataListOffset);
                     }
                     for (int i = 0; i < result.length; i++) {
                         dataList.add(result[i]);
