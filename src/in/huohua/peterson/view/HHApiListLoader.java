@@ -156,7 +156,8 @@ public class HHApiListLoader<T> implements OnApiCallFinishedListener {
         }
         lastLoadingTime = System.currentTimeMillis();
         if (reload || forceLoad) {
-            int offset = (reload) ? 0 : dataList.size();
+            int offset = (reload) ? 0 : dataList.size() - dataListOffset;
+            offset = offset > 0 ? offset : 0;
             listApi.setOffset(offset);
             isLoading = true;
             /*
