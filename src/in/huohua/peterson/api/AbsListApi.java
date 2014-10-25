@@ -14,8 +14,8 @@ package in.huohua.peterson.api;
 abstract public class AbsListApi<T> extends AbsApi<T[]> {
     private static final long serialVersionUID = 1L;
 
-    protected int offset;
-    protected int limit;
+    protected int offset = 20;
+    protected int limit = 0;
 
     public int getOffset() {
         return offset;
