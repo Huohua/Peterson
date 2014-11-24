@@ -119,7 +119,7 @@ public class HHApiListLoader<T> implements OnApiCallFinishedListener {
     }
 
     private void loadData(boolean reload, final boolean forceLoad) {
-        if (isLoading || !hasMoreData || lastLoadingTime >= System.currentTimeMillis() - LOADING_EXPIRE_TIME) {
+        if (isLoading || !hasMoreData || lastLoadingTime >= System.currentTimeMillis() - LOADING_EXPIRE_TIME || listApi == null) {
             return;
         }
         lastLoadingTime = System.currentTimeMillis();
