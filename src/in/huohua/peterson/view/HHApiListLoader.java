@@ -1,17 +1,14 @@
 package in.huohua.peterson.view;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import in.huohua.peterson.api.AbsListApi;
 import in.huohua.peterson.api.ApiCallResponse;
 import in.huohua.peterson.network.NetworkMgr;
 import in.huohua.peterson.network.NetworkMgr.OnApiCallFinishedListener;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 
-import com.huewu.pla.lib.internal.PLA_AbsListView;
-import com.huewu.pla.lib.internal.PLA_ListView;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HHApiListLoader<T> implements OnApiCallFinishedListener {
     public interface LoadingFinishedJudger<T> {
@@ -41,7 +38,6 @@ public class HHApiListLoader<T> implements OnApiCallFinishedListener {
     private long lastLoadingTime;
     private AbsListApi<T> listApi;
     final private AbsListView listView;
-    final private PLA_ListView pla_ListView;
     private LoadingFinishedJudger<T> loadingFinishedJudger;
     private OnLoadListener onLoadListener;
 
@@ -53,18 +49,6 @@ public class HHApiListLoader<T> implements OnApiCallFinishedListener {
         this.isLoading = false;
         this.isLoadOnce = false;
         this.listView = listView;
-        this.pla_ListView = null;
-    }
-
-    public HHApiListLoader(final IHHListAdapter<T> adapter, final PLA_ListView pla_ListView, final AbsListApi<T> listAPI) {
-        this.listApi = listAPI;
-        this.adapter = adapter;
-        this.dataList = new ArrayList<T>();
-        this.hasMoreData = true;
-        this.isLoading = false;
-        this.isLoadOnce = false;
-        this.listView = null;
-        this.pla_ListView = pla_ListView;
     }
 
     public void setDataListOffset(int dataListOffset) {
@@ -109,22 +93,6 @@ public class HHApiListLoader<T> implements OnApiCallFinishedListener {
                 @Override
                 public void onScrollStateChanged(final AbsListView view, final int scrollState) {
                     // TODO Auto-generated method stub
-                }
-            });
-        } else if (pla_ListView != null) {
-            pla_ListView.setOnScrollListener(new com.huewu.pla.lib.internal.PLA_AbsListView.OnScrollListener() {
-                @Override
-                public void onScroll(PLA_AbsListView view, int firstVisibleItem, int visibleItemCount,
-                        int totalItemCount) {
-                    if (firstVisibleItem + visibleItemCount + 5 >= totalItemCount) {
-                        loadData(false, true);
-                    }
-                }
-
-                @Override
-                public void onScrollStateChanged(PLA_AbsListView view, int scrollState) {
-                    // TODO Auto-generated method stub
-
                 }
             });
         }
