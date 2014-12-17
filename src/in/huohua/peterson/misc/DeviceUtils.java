@@ -11,13 +11,18 @@
 
 package in.huohua.peterson.misc;
 
-import java.util.UUID;
-
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.WindowManager;
+
+import java.util.UUID;
 
 public class DeviceUtils {
     final private static String CACHE_KEY_DEVICE_ID = "DeviceUtils.DeviceId";
@@ -86,5 +91,25 @@ public class DeviceUtils {
             return false;
         }
         return true;
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public static boolean hasSoftKeys(WindowManager windowManager){
+
+        Display d = windowManager.getDefaultDisplay();
+
+        DisplayMetrics realDisplayMetrics = new DisplayMetrics();
+        d.getRealMetrics(realDisplayMetrics);
+
+        int realHeight = realDisplayMetrics.heightPixels;
+        int realWidth = realDisplayMetrics.widthPixels;
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        d.getMetrics(displayMetrics);
+
+        int displayHeight = displayMetrics.heightPixels;
+        int displayWidth = displayMetrics.widthPixels;
+
+        return (realWidth - displayWidth) > 0 || (realHeight - displayHeight) > 0;
     }
 }
